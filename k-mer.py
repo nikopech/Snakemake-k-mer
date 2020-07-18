@@ -1,53 +1,31 @@
+import matplotlib.pyplot as plt
 import sys
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from numpy import array
+from scipy import stats
+import matplotlib.mlab as mlab
+import matplotlib.pylab as plt 
+import pandas as pd
+import math 
+import matplotlib as mpl
+mpl.rcParams['agg.path.chunksize'] = 10000
+from fit import fit_func as fit_func
+import operator
+import count_kmers
+from OrderedCounter import OrderedCounter as OrderedCounter
+import scipy.stats
+import godel_f
+from nltk.probability import FreqDist, MLEProbDist
 
-
-def count_kmers(read, k):
-    """Count kmer occurrences in a given read.
-
-    Parameters
-    ----------
-    read : string
-        A single DNA sequence.
-    k : int
-        The value of k for which to count kmers.
-
-    Returns
-    -------
-    counts : dictionary, {'string': int}
-        A dictionary of counts keyed by their individual kmers (strings
-        of length k).
-
-    Examples
-    --------
-    >>> count_kmers("GATGAT", 3)
-    {'ATG': 1, 'GAT': 2, 'TGA': 1}
-    """
-   
-    # Calculate how many kmers of length k there are
-    num_kmers = len(read) - k + 1
-    # Loop over the kmer start positions
-    for i in range(num_kmers):
-        # Slice the string to get the kmer
-        kmer = read[i:i+k]
-        # Add the kmer to the dictionary if it's not there
-        if kmer not in counts:
-            counts[kmer] = 0
-        # Increment the count for this kmer
-        counts[kmer] += 1
-    # Return the final counts
-    return counts
-	
 # open input file 
-fastq_filehandle = open(sys.argv[2], "r")
+#fastq_filehandle = open(sys.argv[2], "r")
+fastq_filehandle = open('files/Saccharomyces_cerevisiae.R64-1-1.dna.toplevel.fa', "r")
 # open output file
-output_file = open(sys.argv[3], "w")
+#output_file = open(sys.argv[3], "w")
 # initialize k from the first argument, convert to an integer
-k = int(sys.argv[1])
+k =6#sys.argv[1]
 # Start with an empty dictionary
 counts = {}
 
@@ -58,23 +36,74 @@ for row in fastq_filehandle:
 		# Each row
 		row = row.strip()
 		#Use of count_kmers routine
-		counts =count_kmers(row,k)
+		counts =count_kmers.count_kmers(row,k,counts)
+	
+			
+# Sort dictionary by value
+sorted_counts = dict(sorted(counts.items(), key=operator.itemgetter(1)))
 
-#Save data in outpout file
-output_file.write("The %i-mer dictionary is:" %k)
-output_file.write(repr(counts))
-#List of the dictionary values
-values=list(counts.values())
 #Array of the dictionary values
-data=np.array(values)
-# Design
-plt.ylabel('counts',fontsize=12)
-plt.title( '%i-mer spectrum' %k,fontsize=16)
-plt.xlabel( '%i -mer frequency' %k,fontsize=12)
-plt.plot(data)
-# Save of result
-plt.savefig('k-mer-for-%i.png'%k)
+data=np.array(list(sorted_counts.values()))
 
-# Close the files
-fastq_filehandle.close()
-output_file.close()
+# Count of the class values
+counter=OrderedCounter(data)   
+
+# Count of the frequency of each class
+counter_class=OrderedCounter(counter.values())
+
+# Array of the classes
+classes={}
+classes=[count for n,count in counter.items() for i in range(count)]
+
+
+# Calculate entropy of each element
+# calculate probability for each byte as number of occurrences / array length
+probabilities = [n_x/sum(sorted_counts.values()) for x,n_x in sorted_counts.items()]
+
+#print(sum(probabilities))
+
+# calculate per-character entropy fractions
+e_x = [-p_x*math.log(p_x,2) for p_x in probabilities]
+
+
+
+# Second way for calculate entropy with nltk library
+'''
+freq_dist = FreqDist(sorted_counts)
+prob_dist = MLEProbDist(freq_dist)
+px = [prob_dist.prob(x) for x,n_x in sorted_counts.items()]
+e_x = [-p_x*math.log(p_x,2) for p_x in px]
+'''
+
+
+# Calculate the prime numbers for Godel Numbers
+prime_numbers=[]
+prime_numbers=godel_f.sieve(k)
+# Calculate Godel Numbers
+godel_numbers={}
+godel_numbers=godel_f.godel(sorted_counts,prime_numbers,godel_numbers)
+
+
+# Variables (X,Y) for the machine learning algorithms
+Y = np.array(ar).T
+X = np.vstack(([np.array(e_x)],[np.array(list( godel_numbers.values()))])).T
+
+# Shape of the variables
+print(X.shape)
+print(Y.shape)
+
+# Fitting
+result_fit_algorithms = fit_func(X,Y)
+# Fitting of godel numbers in norm curve
+result_godel_fit=godel_f.norm_fit_godel_numbers(godel_numbers,k)
+# Mean calculate of results
+result=(result_fit_algorithms+result_godel_fit)/2
+
+# Plot 
+count_kmers.plot_counts(data,k)
+count_kmers.plot_spectrum(counter,k)
+count_kmers.plot_class(counter,k)
+
+# Output result
+#output_file.write("%f" %result)
+#output_file.close
