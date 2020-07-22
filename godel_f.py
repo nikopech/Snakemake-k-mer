@@ -128,7 +128,7 @@ def norm_fit_godel_numbers(godel_numbers,k):
 	plt.show()
 	plt.clf()
 	
-	return mean_squared_error(pdf_norm, time_duration_trans ,squared=False)
+	return 1/mean_squared_error(pdf_norm, x ,squared=False)
 	
 	'''
 	def rmse(predictions, targets):
