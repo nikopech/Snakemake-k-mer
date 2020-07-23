@@ -24,7 +24,7 @@ def get_metrics(y_test, y_predicted):
 
 
 
-def fit_func(X,Y):
+def fit_func(X,Y,k):
 
 	X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size=0.20, random_state=None)
 	# prepare models
@@ -45,9 +45,9 @@ def fit_func(X,Y):
 		cv_results = model_selection.cross_val_score(model, X, Y, cv=kfold, scoring=scoring)
 		results.append(cv_results)
 		names.append(name)
-		msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+		#msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
 		result=result+cv_results.mean()
-		print(msg)
+		#print(msg)
 		
 	# boxplot algorithm comparison
 	fig = plt.figure()
@@ -56,13 +56,10 @@ def fit_func(X,Y):
 	plt.boxplot(results)
 	ax.set_xticklabels(names)
 	plt.show()
-	plt.savefig('fffff.png')
+	plt.savefig('Algorithm box plot for k=%i.png'%k)
 	plt.clf()
-	X_train, X_test, Y_train, Y_test = train_test_split(X,Y, test_size=0.30, random_state=42)
-	print(Y_train)
-	print(Y_test)
-	print(X_test)
-	print(X_train)
+	
+
 	classifier = MultinomialNB()
 	classifier.fit(X_train, Y_train)
 	y_pred = classifier.predict(X_test)
