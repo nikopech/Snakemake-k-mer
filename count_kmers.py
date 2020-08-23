@@ -1,7 +1,25 @@
 import numpy as np
 import matplotlib.pylab as plt 
 import pandas as pd
+'''
+def getKmers(sequence, size):
+	"""Count kmer occurrences in a given sequence.
 
+    Parameters
+    ----------
+    sequence : string
+        A  DNA sequence.
+    k : int
+        The value of k for which to count kmers.
+
+    Returns
+    -------
+        A dictionary of counts keyed by their individual kmers (strings
+        of length k).
+	"""
+	
+    return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
+'''
 def count_kmers(read, k,counts):
     """Count kmer occurrences in a given read.
 
@@ -37,35 +55,4 @@ def count_kmers(read, k,counts):
         counts[kmer] += 1
     # Return the final counts
     return counts
-	
-def plot_counts(data,k):
-
-	plt.ylabel('counts',fontsize=12)
-	plt.title( '%i plot of values' %k,fontsize=16)
-	plt.xlabel( '%i place' %k,fontsize=12)
-	plt.plot(data,'bo')
-	# Save of result
-	plt.savefig('Step1:k-mer-for-%i.png'%k)
-	plt.clf()
-	
-def plot_spectrum(counter,k):
-	plt.ylabel('counts',fontsize=12)
-	plt.title( '%i-mer spectrum' %k,fontsize=16)
-	plt.xlabel( '%i -mer frequency' %k,fontsize=12)
-	plt.plot(list(counter.values()),list(counter.keys()),'bo')
-	# Save of result
-	plt.savefig('Step2:k-mer-for-%i.png'%k)
-	plt.clf()
-	
-def plot_class(counter2,k):
-
-		
-		plt.bar(counter2.values(),counter2.keys(), align='center', alpha=0.5)
-		plt.ylabel('counts',fontsize=12)
-		plt.title( 'class-of-k-%i.png'%k,fontsize=16)
-		plt.xlabel( 'class',fontsize=12)
-		
-		plt.show()
-		plt.savefig('class-of-k-%i.png'%k)
-		plt.clf()
 		

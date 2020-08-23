@@ -1,5 +1,5 @@
 
-k=[2,3,4]
+k=[17,14,13,26,27,30,32,36,40,43,41]
 
 data_dir = 'files'
 result_dir = 'results'
@@ -22,7 +22,7 @@ rule k_mer_files:
 	priority:2
 	shell:r"""
 			start=$(date +%s.%N)
-			python k-mer.py {wildcards.kmer} {input.data} {output.out_file} >> {output.out_file}
+			python k-mer.py {wildcards.kmer} {input.data} {output.out_file} 
 			dur=$(echo "$(date +%s.%N) - $start" | bc) 
 			printf "%.6f," $dur >> "time.txt" 
 			"""
@@ -34,5 +34,5 @@ rule best_fit:
 	message:
 	    'Best kmer search'
 	shell: r"""
-			python best-fit.py {output.final_output} >> {output.final_output}
+			python best-fit.py {output.final_output} 
 			"""		
