@@ -6,7 +6,8 @@ from tkinter.simpledialog import askfloat
 import re
 import os,glob
 from pathlib import Path
-
+import numpy as np
+from numpy import cumsum, ones
 
 # Every file in results directory
 entries = os.listdir('results/')
@@ -37,3 +38,23 @@ for entry in entries:
 output_file = open(sys.argv[-1], "w")
 output_file.write("The best fit is for %s"%best_file)
 output_file.close
+
+results =[]
+# This opens a handle to your file, in 'r' read mode
+with open('time.txt') as fp:
+	# Read in all the lines of your file into a list of lines
+	for line in fp:
+		results.append(line)
+
+float_results=[ float(x) for x in results ]
+
+data= np.cumsum(float_results)
+y=np.arange(1,data.size+1,1)
+# Plot time of k files
+plt.plot(data,y)
+plt.ylabel('number of k files')
+plt.xlabel('time(sec)')
+plt.yticks(range(1,data.size+1))
+plt.title('Time plot')
+plt.savefig('time.png')
+plt.show()
