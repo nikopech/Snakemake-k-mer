@@ -84,6 +84,7 @@ def pca(X,Y,k):
 	train_img, test_img, y_train, test_y = train_test_split( X, Y, test_size=0.20, random_state=0)
 	# Standardizing the features
 	scaler = StandardScaler()
+	
 	# Fit on training set only.
 	scaler.fit(train_img)
 	# Apply transform to both the training set and the test set.
@@ -97,9 +98,12 @@ def pca(X,Y,k):
 	test_img = pca.transform(test_img)
 	
 	X_new = pca.inverse_transform(train_img)
+	
+	# Plot scatter
 	plt.scatter(X[:, 0], X[:, 1], alpha=0.2)
 	plt.scatter(X_new[:, 0], X_new[:, 1], alpha=0.8)
 	plt.axis('equal');
+	plt.savefig('pca.png')
 	
 	classifier = RandomForestClassifier(max_depth=2, random_state=0)
 	classifier.fit(train_img, y_train)
@@ -108,7 +112,5 @@ def pca(X,Y,k):
 	y_pred = classifier.predict(test_img)
 	
 	cm = confusion_matrix(test_y, y_pred)
-	print(cm)
-	print('Accuracy' + str(accuracy_score(test_y, y_pred)))
 	
 	return accuracy_score(test_y, y_pred)
