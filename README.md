@@ -1,4 +1,3 @@
-# Snakemake-k-mer
 
 # Description
 Use of Snakemake workflow management system along with k-mer algorithm.
