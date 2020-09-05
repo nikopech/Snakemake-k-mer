@@ -12,6 +12,7 @@ Before you continue, ensure you have met the following requirements:
   3.Seaborn library.
 
 ## Installation
-  To install Snakemake k-mer, follow these steps:
-  1. Download the project file from
+To install Snakemake k-mer project:
+  1. Download the project file from Code Bar and download the zip file.
+  
 ## Geting started
