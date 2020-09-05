@@ -16,7 +16,7 @@ To install Snakemake k-mer project:
   1. Click the Code Bar and download the zip file of the project.
   
 ## Geting started
-In order to run the project follow the steps:   
+In order to run the project follow the steps:     
   Step 1. Copy the DNA data file of with the biological sequences in files file.  
   Step 2. Modify the variable k in Snakefile file with the choosen integer numbers for the analyses.  
   Step 3. Run the command line 'snakemake' in a conda enviroment.  
