@@ -7,9 +7,9 @@ K-mers are subsequences of length k contained within a biological sequence. Prim
 ## Requirements
 Before you continue, ensure you have met the following requirements:  
   * You have installed the python libraries:  
-    1. Natural Language Toolkit library.  
-    2. Scikit-learn library.  
-    3. Seaborn library.  
+    1.Natural Language Toolkit library.  
+    2.Scikit-learn library.  
+    3.Seaborn library.  
 
 ## Installation
 To install Snakemake k-mer project:
@@ -18,6 +18,6 @@ To install Snakemake k-mer project:
 ## Geting started
 In order to run the project follow the steps:   
  Step 1. Copy the DNA data file of with the biological sequences in data file.  
- Step 2. Modify the variable k in ```diff -Snakefile ``` file with the choosen integer numbers for the analyses.  
+ Step 2. Modify the variable k in ```diff + Snakefile ``` file with the choosen integer numbers for the analyses.  
  Step 3. Run the command line 'snakemake' in a conda enviroment.  
  Step 4. Wait for the results.  
