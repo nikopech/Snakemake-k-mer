@@ -7,9 +7,9 @@ K-mers are subsequences of length k contained within a biological sequence. Prim
 ## Requirements
 Before you continue, ensure you have met the following requirements:
   * You have installed the python libraries:
-  1.Natural Language Toolkit library.
-  2.scikit-learn library.
-  3.Seaborn library.
+  1.Natural Language Toolkit library.  
+  2.Scikit-learn library.  
+  3.Seaborn library.  
 
 ## Installation
 To install Snakemake k-mer project:
