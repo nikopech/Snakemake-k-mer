@@ -15,6 +15,10 @@ Before you continue, ensure you have met the following requirements:
 To install Snakemake k-mer project:
   1. Click the Code Bar and download the zip file of the project.
   
+  Or
+  
+  2. You can clone the project in your local PC using git:
+  
 ## Geting started
  In order to run the project follow the steps:     
  
