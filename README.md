@@ -17,7 +17,7 @@ To install Snakemake k-mer project:
   
   Or
   
-  2. You can clone the project in your local PC using git:
+  2. You can clone the project in your local PC using git:    
   git clone ```https://github.com/seramelp/Snakemake-k-mer.git```
   
 ## Geting started
