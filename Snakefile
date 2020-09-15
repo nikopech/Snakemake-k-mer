@@ -1,5 +1,4 @@
-
-k=[17,14,13,26,27,30,32,36,40,43,41]
+k=[7,5]
 
 data_dir = 'files'
 result_dir = 'results'
@@ -13,7 +12,7 @@ rule all:
 
 rule k_mer_files:
 	input:
-	    data = expand(os.path.join(data_dir,'{sample}.fa'),sample=data_pfxes)
+	    data = expand(os.path.join(data_dir,'{sample_file}'),sample_file=data_fns)
 	output:
 	    out_file = os.path.join(result_dir,'{sample}_result_{kmer}.txt')
 	message:
@@ -24,15 +23,16 @@ rule k_mer_files:
 			start=$(date +%s.%N)
 			python k-mer.py {wildcards.kmer} {input.data} {output.out_file} 
 			dur=$(echo "$(date +%s.%N) - $start" | bc) 
-			printf "%.6f," $dur >> "time.txt" 
+			printf "%.6f\n" $dur >> "time.txt" 
 			"""
 
 rule best_fit:
+	input: final_in=rules.k_mer_files.input.data
 	output:
 	    final_output = 'result.txt'
 	priority:1
 	message:
 	    'Best kmer search'
 	shell: r"""
-			python best-fit.py {output.final_output} 
+			python best-fit.py {output.final_output} {input.final_in} 
 			"""		

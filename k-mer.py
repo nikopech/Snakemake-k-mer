@@ -17,6 +17,7 @@ import scipy.stats
 import godel_f
 from nltk.probability import FreqDist, MLEProbDist
 import plot
+import os
 
 # open input file 
 fastq_filehandle = open(sys.argv[2], "r")
@@ -27,51 +28,48 @@ k =int(sys.argv[1])
 
 # Start with an empty dictionary
 counts = {}
-i=0
+
 # Loop over each line in the file
 for row in fastq_filehandle:
-
 	# Keep the rows with data
-	if "REF" not in row:
+		if " " not in row:
 		# Each row
-		row = row.strip()
+			row = row.strip()
 		#Use of count_kmers routine
-		counts =count_kmers.count_kmers(row,k,counts)
-		
+			counts =count_kmers.count_kmers(row,k,counts)
+
+#Close input file
+fastq_filehandle.close
 
 # Sort dictionary by value
 sorted_counts = dict(sorted(counts.items(), key=operator.itemgetter(1)))
-unsorted_values=list(counts.values())
-
-#Array of the dictionary values
-unsorted_data=np.array(unsorted_values)
-plot.plot_counts(unsorted_data,k,1)
-
-sorted_data=np.array(list(sorted_counts.values()))
-plot.plot_counts(sorted_data,k,2)
-
 del counts
-del unsorted_data
-del unsorted_values
+#Array of the dictionary values
+sorted_data=np.array(list(sorted_counts.values()))
+#Array of the dictionary keys
+sorted_keys=np.array(list(sorted_counts.keys()))
 
 # Count of the class values
 counter=OrderedCounter(sorted_data)   
+
+# Plot data
+plot.plot_counts(sorted_data,k)
 plot.plot_spectrum(counter,k)
-del sorted_data
 
 # Count of the frequency of each class
-counter_class=OrderedCounter(counter.values())
-plot.plot_class(counter_class,k)
+counter_class=OrderedCounter(counter.keys())
 
 # Array of the classes
 classes={}
 classes=[count for n,count in counter.items() for i in range(count)]
 
+# Variables (X,Y) for the machine learning algorithms
+Y = np.array(classes).T
+
+del classes
 del counter
-del counter_class
 
 #Calculate entropy with nltk library
-
 freq_dist = FreqDist(sorted_counts)
 prob_dist = MLEProbDist(freq_dist)
 px = [prob_dist.prob(x) for x,n_x in sorted_counts.items()]
@@ -88,35 +86,57 @@ prime_numbers=godel_f.sieve(k)
 # Calculate Godel Numbers
 godel_numbers={}
 godel_numbers=godel_f.godel(sorted_counts,prime_numbers,godel_numbers)
+del prime_numbers
 
 # Variables (X,Y) for the machine learning algorithms
-Y = np.array(classes).T
 X = np.vstack(([np.array(e_x)],[np.array(list( godel_numbers.values()))])).T
 
-del prime_numbers
-del e_x
 
-# Fitting
-result_fit_algorithms=[]
-result_fit_algorithms = fit.fit_func(X,Y,k)
+# Create info file
+info = open("k={0}/info.txt".format(k),"a")
+df_data = pd.DataFrame({'K-mer':sorted_keys,'Value':sorted_data,'Godel_number':np.array(list(godel_numbers.values())),'Entropy':e_x}) 
+info.write(df_data.to_string())
+info.close()
+
 # Fitting of godel numbers in norm curve
 result_godel_fit=godel_f.norm_fit_godel_numbers(godel_numbers,k)
 
+# Free memory
 del godel_numbers
+del e_x
+del counter_class
+del sorted_data
+del sorted_keys
 
+# Fitting
+result_fit_algorithms=[]
+result_machine = []
+result_fit_algorithms.append(k)
+result_machine = fit.fit_func(X,Y,k)
+result_fit_algorithms.extend(result_machine)
 #PCA fitting result
 result_pca_fit = fit.pca(X,Y,k)
-
 
 #List of results
 result_fit_algorithms.append(result_godel_fit)
 result_fit_algorithms.append(result_pca_fit)
-print(result_fit_algorithms)
-# Output result
-with open(output_file,'w') as file:
-	for item in result_fit_algorithms:
-		file.write("%s\n" % item)
-	
-fastq_filehandle.close
+
 del X
 del Y
+
+df=pd.DataFrame(result_fit_algorithms,index=['k-Lengyh','LinearDiscriminantAnalysis','KNN', 'DecisionTreeClassifier',
+	'GaussianNB','MultinomialNB','NormfitGodelNumbering','PCA'],columns=['Results'])
+	
+# Output result
+file= open(output_file,'a')
+file.write(df.to_string())
+file.close
+
+time_file= open('time.txt','a')
+time_file.write( str(k)+'\n')
+time_file.close
+
+# Sequence matrix
+#matrix.create_matrix(sys.argv[2],k)
+
+del result_fit_algorithms,result_godel_fit,result_pca_fit
