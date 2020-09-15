@@ -1,8 +1,6 @@
 import sys
 import matplotlib.pyplot as plt
 import math
-import tkinter as tk
-from tkinter.simpledialog import askfloat
 import re
 import os,glob
 from pathlib import Path
