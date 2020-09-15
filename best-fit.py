@@ -46,9 +46,9 @@ for entry in entries:
 
 
 # Print the best file 
-output_file= open(sys.argv[1],'a')
-output_file.write("The best fit is for %s\n"%best_file)
-output_file.write("The best fit is for %i"%best_k)
+output_file= open(sys.argv[1],'w')
+output_file.write("The best fit is for file=%s\n"%best_file)
+output_file.write("The best fit is for k=%i"%best_k)
 output_file.close
 
 # Print the time.txt in sort order
