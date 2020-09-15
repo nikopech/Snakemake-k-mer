@@ -136,7 +136,7 @@ time_file= open('time.txt','a')
 time_file.write( str(k)+'\n')
 time_file.close
 
-# Sequence matrix
+# For print the Sequence matrix
 #matrix.create_matrix(sys.argv[2],k)
 
 del result_fit_algorithms,result_godel_fit,result_pca_fit
