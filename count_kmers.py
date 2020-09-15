@@ -1,25 +1,7 @@
 import numpy as np
 import matplotlib.pylab as plt 
 import pandas as pd
-'''
-def getKmers(sequence, size):
-	"""Count kmer occurrences in a given sequence.
 
-    Parameters
-    ----------
-    sequence : string
-        A  DNA sequence.
-    k : int
-        The value of k for which to count kmers.
-
-    Returns
-    -------
-        A dictionary of counts keyed by their individual kmers (strings
-        of length k).
-	"""
-	
-    return [sequence[x:x+size].lower() for x in range(len(sequence) - size + 1)]
-'''
 def count_kmers(read, k,counts):
     """Count kmer occurrences in a given read.
 
@@ -55,4 +37,3 @@ def count_kmers(read, k,counts):
         counts[kmer] += 1
     # Return the final counts
     return counts
-		
