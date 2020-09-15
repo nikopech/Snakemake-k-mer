@@ -19,6 +19,7 @@ from sklearn.preprocessing import StandardScaler
 import seaborn as sns; sns.set()
 from sklearn.ensemble import RandomForestClassifier
 import plot
+np.seterr(divide='ignore', invalid='ignore')
 
 def fit_func(X,Y,k):
 
@@ -103,7 +104,7 @@ def pca(X,Y,k):
 	plt.scatter(X[:, 0], X[:, 1], alpha=0.2)
 	plt.scatter(X_new[:, 0], X_new[:, 1], alpha=0.8)
 	plt.axis('equal');
-	plt.savefig('pca.png')
+	plt.savefig('k=%i/pca.png'%k)
 	
 	classifier = RandomForestClassifier(max_depth=2, random_state=0)
 	classifier.fit(train_img, y_train)

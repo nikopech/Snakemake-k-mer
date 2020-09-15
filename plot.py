@@ -18,7 +18,8 @@ def plot_counts(data,k):
 	plt.title( '%i-mer values plot' %k)
 	plt.xlabel( 'position depth %i-mer' %k)
 	plt.plot(data,'bo')
-	plt.ylim( data.min()-1, data.max()+1 )
+	plt.ylim( data.min()-50, data.max()+100 )
+	plt.gcf().autofmt_xdate()
 	# Save of result
 	output_dir ="k={}".format(k)
 	os.makedirs(output_dir)
@@ -55,7 +56,7 @@ def godel_histogram(x,pdf_norm,k):
 	k: int
 		K-mer value
 	"""
-	plt.hist(x, bins='auto', density=True)
+	plt.hist(x, bins=85, density=True)
 	plt.plot(x, pdf_norm, label='Fitted normal distribution')
 	plt.xlabel('Godel Numbering')
 	plt.ylabel('Probability')
@@ -78,28 +79,10 @@ def plot_spectrum(counter,k):
 	plt.title( '%i-mer spectrum plot' %k)
 	plt.xlabel( '%i -mer frequency' %k)
 	plt.plot(list(counter.values()),list(counter.keys()),'bo')
-	plt.ylim( min(counter.keys())-1, max(counter.keys())+1 )
-	#plt.xticks(np.arange(0, max(list(counter.values())), step=list(max(counter.values()))/6))
+	plt.ylim( min(counter.keys())-50, max(counter.keys())+100 )
+	plt.gcf().autofmt_xdate()
+	
 	# Save of result
 	plt.savefig('k=%i/Spectrum-k-mer-for-%i.png'%(k,k))
 	plt.clf()
 	
-def plot_class(data_counter,k):
-	"""Plot bar of the classes of the k-mer values.
-
-    Parameters
-    ----------
-    data_counter : array
-        The array with the classes values.
-	k: int
-		K-mer value
-	"""
-	plt.bar(data_counter.values(),data_counter.keys(), align='center', alpha=0.35)
-	plt.ylabel('counts')
-	plt.title( 'class-of-k-%i.png'%k)
-	plt.xlabel( 'class')
-	plt.xlim(min(data_counter.values())-0.35,max(data_counter.values())+0.35)
-	plt.ylim(min(data_counter.keys())-1,max(data_counter.keys())+1)
-	plt.show()
-	plt.savefig('k=%i/class-of-k-%i.png'%(k,k))
-	plt.clf()
