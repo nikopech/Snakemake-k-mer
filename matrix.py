@@ -7,18 +7,25 @@ def create_matrix(file,best_k):
  # Start with an empty dictionary
  counts = {}
  seq=0
+ seq_string=""
+ seq_first_row = 0
  # Loop over each line in the file
  for row in fastq_filehandle:
-	 # Keep the rows with data
-		 if " " not in row:
-		 # Each row
-			 row = row.strip()
-		 #Use of count_kmers routine
-			 counts =count_kmers(seq_id,row,best_k,counts)
-		 else:
-			 seq=seq+1
-			 seq_id="seq_{}".format(seq)
-			 counts[seq_id]={}
+	# Keep the rows with data
+		if " " not in row:
+		# Each row
+			row = row.strip()
+			seq_string+=row
+		else:
+			if seq_first_row==0:
+				seq_first_row=1
+				continue
+			seq=seq+1
+			seq_id="seq_{}".format(seq)
+			counts[seq_id]={}
+			#Use of count_kmers routine
+			counts =count_kmers(seq_id,seq_string,best_k,counts)
+			seq_string=""
 
 
  matrix_data = pd.DataFrame(counts)
