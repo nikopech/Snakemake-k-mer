@@ -2,7 +2,8 @@ k=[7,5]
 
 data_dir = 'files'
 result_dir = 'results'
-data_fns = os.listdir(data_dir)
+data_fns = [f for f in os.listdir(data_dir) if f.endswith('.fa')]
+
 data_pfxes = list(map(lambda p: p[:p.rfind('.')],data_fns))
 
 rule all:
@@ -35,4 +36,4 @@ rule best_fit:
 	    'Best kmer search'
 	shell: r"""
 			python best-fit.py {output.final_output} {input.final_in} 
-			"""		
+			"""	
