@@ -18,28 +18,37 @@ import godel_f
 from nltk.probability import FreqDist, MLEProbDist
 import plot
 import os
+import dataPreProcessing
 
 # open input file 
 fastq_filehandle = open(sys.argv[2], "r")
+fastq_filehandle.close
+
 #  output file
 output_file = sys.argv[3]
 # initialize k from the first argument, convert to an integer
 k =int(sys.argv[1])
 
+# Creating the .txt file from fasta file
+files = [f for f in os.listdir('files/') if os.path.isfile(os.path.join('files/', f))]
+file = files[0]
+filename = file[0:-3]
+filename_txt = filename + '.txt'
+data = dataPreProcessing.read_fasta_file('files/' + file)
+dataPreProcessing.save_results_to_file(data, filename_txt, 'files')
+del data
+txt_filehandle = open('files/' + filename_txt, "r")
+
 # Start with an empty dictionary
 counts = {}
 
-# Loop over each line in the file
-for row in fastq_filehandle:
-	# Keep the rows with data
-		if " " not in row:
-		# Each row
-			row = row.strip()
+for row in txt_filehandle:
+    	
 		#Use of count_kmers routine
-			counts =count_kmers.count_kmers(row,k,counts)
+		counts =count_kmers.count_kmers(row,k,counts)
 
 #Close input file
-fastq_filehandle.close
+txt_filehandle.close
 
 # Sort dictionary by value
 sorted_counts = dict(sorted(counts.items(), key=operator.itemgetter(1)))
