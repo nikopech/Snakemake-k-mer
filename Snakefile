@@ -1,9 +1,8 @@
-k=[7,5]
+k=[7,6,5]
 
 data_dir = 'files'
 result_dir = 'results'
-data_fns = [f for f in os.listdir(data_dir) if f.endswith('.fa')]
-
+data_fns = [f for f in os.listdir(data_dir) if f.endswith('.fasta')]
 data_pfxes = list(map(lambda p: p[:p.rfind('.')],data_fns))
 
 rule all:
