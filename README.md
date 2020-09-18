@@ -21,11 +21,18 @@ To install Snakemake k-mer project:
   ``` git clone https://github.com/seramelp/Snakemake-k-mer.git```
   
 ## Geting started
- The project consists of one main file:
-  . Snakefile
+The project consists of one main file:
+  * Snakefile
 
 and eight additional scripts, that contain the functions called by the main file:
-  .
+  * k-mer.py
+  * fit.py
+  * best-fit.py
+  * plot.py
+  * plot.py
+  * count_kmers.py
+  * godel_f.py
+  * dataPreProcessing.py
 
  In order to run the project follow the steps:     
  
