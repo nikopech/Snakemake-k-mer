@@ -28,7 +28,7 @@ and eight additional scripts, that contain the functions called by the main file
   * k-mer.py
   * fit.py
   * best-fit.py
-  * plot.py
+  * matrix.py
   * plot.py
   * count_kmers.py
   * godel_f.py
