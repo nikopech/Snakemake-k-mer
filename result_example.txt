@@ -1,0 +1,2 @@
+The best fit is for file=sample_dnaseq1_result_40.txt
+The best fit is for k=40
