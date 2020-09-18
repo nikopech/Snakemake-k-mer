@@ -1,4 +1,4 @@
-k=[7,6,5]
+k=[5,6,7]
 
 data_dir = 'files'
 result_dir = 'results'
@@ -34,5 +34,5 @@ rule best_fit:
 	message:
 	    'Best kmer search'
 	shell: r"""
-			python best-fit.py {output.final_output} {input.final_in} 
-			"""	
+      python best-fit.py {output.final_output} {input.final_in} 
+			"""
