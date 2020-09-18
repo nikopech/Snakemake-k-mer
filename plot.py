@@ -18,7 +18,7 @@ def plot_counts(data,k):
 	plt.title( '%i-mer values plot' %k)
 	plt.xlabel( 'position depth %i-mer' %k)
 	plt.plot(data,'bo')
-	plt.ylim( data.min()-50, data.max()+100 )
+#	plt.ylim( data.min()-50, data.max()+100 )
 	plt.gcf().autofmt_xdate()
 	# Save of result
 	output_dir ="k={}".format(k)
@@ -79,7 +79,7 @@ def plot_spectrum(counter,k):
 	plt.title( '%i-mer spectrum plot' %k)
 	plt.xlabel( '%i -mer frequency' %k)
 	plt.plot(list(counter.values()),list(counter.keys()),'bo')
-	plt.ylim( min(counter.keys())-50, max(counter.keys())+100 )
+#	plt.ylim( min(counter.keys())-50, max(counter.keys())+100 )
 	plt.gcf().autofmt_xdate()
 	
 	# Save of result

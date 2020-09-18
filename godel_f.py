@@ -101,6 +101,11 @@ def norm_fit_godel_numbers(godel_numbers,k):
 	# visual inspection
 	plot.godel_histogram(x,pdf_norm,k)
 	
-	return 1/mean_squared_error(pdf_norm, x ,squared=False)
+	try:
+		c = 1/mean_squared_error(pdf_norm, x ,squared=False)
+	except ValueError:
+		return 0
+	
+	return c
 
 	
