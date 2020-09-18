@@ -3,31 +3,38 @@ import matplotlib.pylab as plt
 import pandas as pd
 
 def create_matrix(file,best_k):
- fastq_filehandle = open(file, "r")
- # Start with an empty dictionary
- counts = {}
- seq=0
- # Loop over each line in the file
- for row in fastq_filehandle:
-	 # Keep the rows with data
-		 if " " not in row:
-		 # Each row
-			 row = row.strip()
-		 #Use of count_kmers routine
-			 counts =count_kmers(seq_id,row,best_k,counts)
-		 else:
-			 seq=seq+1
-			 seq_id="seq_{}".format(seq)
-			 counts[seq_id]={}
+    fastq_filehandle = open(file, "r")
+    # Start with an empty dictionary
+    counts = {}
+    seq=0
+    # Loop over each line in the file
+    line = ''
+    seq_id="seq_{}".format(seq)
 
+    for row in fastq_filehandle:
+        # Keep the rows with data
+        if ">" not in row:
+            line = line + row.strip()
+        else:
+            if seq != 0:
+                counts =count_kmers(seq_id,line,best_k,counts)
+            
+            seq=seq+1
+            seq_id="seq_{}".format(seq)
+            counts[seq_id]={}
+            line = ''
+    
+    counts =count_kmers(seq_id,line,best_k,counts)
 
- matrix_data = pd.DataFrame(counts)
- fastq_filehandle.close
- # Create info file
- info = open("matrix-{}.txt".format(best_k),'a') 
- info.write(matrix_data.to_string(na_rep='0'))
- info.close()
-
+    matrix_data = pd.DataFrame(counts)
+    fastq_filehandle.close
+    
+    # Create info file
+    info = open("matrix-{}.txt".format(best_k),'a') 
+    info.write(matrix_data.to_string(na_rep='0'))
+    info.close()
+    
+    return
 
 
 
