@@ -1,0 +1,9 @@
+                             Results
+k-Lengyh                    5.000000
+LinearDiscriminantAnalysis  0.644295
+KNN                         0.221477
+DecisionTreeClassifier      0.644295
+GaussianNB                  0.644295
+MultinomialNB               0.144295
+NormfitGodelNumbering       0.049813
+PCA                         0.716667
